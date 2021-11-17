@@ -1,0 +1,17 @@
+El proyecto debe hacer una lectura del archivo excel o base de datos, debe analizar el porcentaje de efectividad de los despachos,
+y considerando las siguientes variables.
+
+
+variables de margen fecha de promesa  y la fecha pactada. --> para comenzar ponderacion de variables.
+y dentro de estas...
+
+1- tiempo de despacho --  para conocer si salio a tiempo o no.
+2- carrier
+3- barrio
+4- agrupador
+
+
+
+****  variables a ponderar ***
+1-region
+2-almacen
