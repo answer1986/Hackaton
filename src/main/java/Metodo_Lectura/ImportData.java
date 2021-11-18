@@ -17,18 +17,21 @@ import jxl.Workbook;
 // metodo para  conectar a la base de datos
 class DBhepler {
     /*String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    String url = "jdbc:sqlserver://127.0.0.1;DatabaseName=javenforexcel";*/
+    String url = "jdbc:sqlserver://127.0.0.1;DatabaseName=hacka";*/
 
-    String driver = "com.mysql.jdbc.Driver";
-    String url = "jdbc:mysql://127.0.0.1:3306/hacka";
+    /*String driver = "com.mysql.cj.jdbc.Driver";
+    String url = "jdbc:mysql://localhost:3306/node";*/
 
     Connection con = null;
     ResultSet res = null;
 
     public void DataBase() {
         try {
-            Class.forName(driver);
-            con = DriverManager.getConnection(url, "root", "root");
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/node","root","rootroot");
+            /*Class.forName(driver);
+            con = DriverManager.getConnection(url, "root", "rootroot");*/
         } catch (ClassNotFoundException e) {
             // TODO Auto-generated catch block
             System.err.println ("No se pudo cargar el controlador JDBC / ODBC.");
@@ -44,7 +47,7 @@ class DBhepler {
     public ResultSet Search(String sql, String str[]) {
         DataBase();
         try {
-            PreparedStatement pst =con.prepareStatement(sql);
+            PreparedStatement pst = con.prepareStatement(sql);
             if (str != null) {
                 for (int i = 0; i < str.length; i++) {
                     pst.setString(i + 1, str[i]);
@@ -268,11 +271,6 @@ class NodeEntity {
      * Consultar todos los datos en la hoja de cálculo en el directorio especificado
       //@param archivo ruta completa del archivo
      * @return
-
-
-
-
-
 
      Al siguiente metodo se le debe asignar la hoja
 
