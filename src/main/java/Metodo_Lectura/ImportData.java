@@ -20,7 +20,7 @@ class DBhepler {
     String url = "jdbc:sqlserver://127.0.0.1;DatabaseName=javenforexcel";*/
 
     String driver = "com.mysql.jdbc.Driver";
-    String url = "jdbc:mysql://127.0.0.1:3306/javenforexcel";
+    String url = "jdbc:mysql://127.0.0.1:3306/hacka";
 
     Connection con = null;
     ResultSet res = null;
