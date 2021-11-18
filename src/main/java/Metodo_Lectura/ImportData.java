@@ -13,6 +13,7 @@ import java.util.List;
 
 import jxl.Sheet;
 import jxl.Workbook;
+import org.w3c.dom.Node;
 
 // metodo para  conectar a la base de datos
 class DBhepler {
@@ -29,16 +30,16 @@ class DBhepler {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/node","root","rootroot");
+                    "jdbc:mysql://localhost:3306/node", "root", "rootroot");
             /*Class.forName(driver);
             con = DriverManager.getConnection(url, "root", "rootroot");*/
         } catch (ClassNotFoundException e) {
             // TODO Auto-generated catch block
-            System.err.println ("No se pudo cargar el controlador JDBC / ODBC.");
+            System.err.println("No se pudo cargar el controlador JDBC / ODBC.");
             e.printStackTrace();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            System.err.println ("No se puede conectar a la base de datos");
+            System.err.println("No se puede conectar a la base de datos");
             e.printStackTrace();
         }
     }
@@ -94,8 +95,10 @@ class StuEntity {
     private Date creationDate;
     private Date promiseDate;
     private List<NodeEntity> nodeEntities;
+    private String pkgDeliveryStatus;
 
-    public StuEntity(String carrier, String tamano, String deliveryType, String serviceType, String customerDestination, Date creationDate, Date promiseDate) {
+    public StuEntity(String carrier, String tamano, String deliveryType, String serviceType, String customerDestination,
+                     Date creationDate, Date promiseDate, List<NodeEntity> nodeEntities, String pkgDeliveryStatus) {
         this.carrier = carrier;
         this.tamano = tamano;
         this.deliveryType = deliveryType;
@@ -103,9 +106,12 @@ class StuEntity {
         this.customerDestination = customerDestination;
         this.creationDate = creationDate;
         this.promiseDate = promiseDate;
+        this.nodeEntities = nodeEntities;
+        this.pkgDeliveryStatus = pkgDeliveryStatus;
     }
 
-    public StuEntity(int id, String carrier, String tamano, String deliveryType, String serviceType, String customerDestination, Date creationDate, Date promiseDate) {
+    public StuEntity(int id, String carrier, String tamano, String deliveryType, String serviceType,
+                     String customerDestination, Date creationDate, Date promiseDate, String pkgDeliveryStatus) {
         this.id = id;
         this.carrier = carrier;
         this.tamano = tamano;
@@ -114,10 +120,12 @@ class StuEntity {
         this.customerDestination = customerDestination;
         this.creationDate = creationDate;
         this.promiseDate = promiseDate;
+        this.pkgDeliveryStatus = pkgDeliveryStatus;
     }
 
     public StuEntity(int id, String carrier, String tamano, String deliveryType, String serviceType,
-                     String customerDestination, Date creationDate, Date promiseDate, List<NodeEntity> nodeEntities) {
+                     String customerDestination, Date creationDate, Date promiseDate, List<NodeEntity> nodeEntities,
+                     String pkgDeliveryStatus) {
         this.id = id;
         this.carrier = carrier;
         this.tamano = tamano;
@@ -127,34 +135,88 @@ class StuEntity {
         this.creationDate = creationDate;
         this.promiseDate = promiseDate;
         this.nodeEntities = nodeEntities;
+        this.pkgDeliveryStatus = pkgDeliveryStatus;
     }
 
-    public String getCarrier() { return carrier; }
-    public void setCarrier(String carrier) { this.carrier = carrier; }
+    public String getCarrier() {
+        return carrier;
+    }
 
-    public String getTamano() { return tamano; }
-    public void setTamano(String tamano) { this.tamano = tamano; }
+    public void setCarrier(String carrier) {
+        this.carrier = carrier;
+    }
 
-    public String getDeliveryType() { return deliveryType; }
-    public void setDeliveryType(String deliveryType) { this.deliveryType = deliveryType; }
+    public String getTamano() {
+        return tamano;
+    }
 
-    public String getServiceType() { return serviceType; }
-    public void setServiceType(String serviceType) { this.serviceType = serviceType; }
+    public void setTamano(String tamano) {
+        this.tamano = tamano;
+    }
 
-    public String getCustomerDestination() { return customerDestination; }
-    public void setCustomerDestination(String customerDestination) { this.customerDestination = customerDestination; }
+    public String getDeliveryType() {
+        return deliveryType;
+    }
 
-    public Date getCreationDate() { return creationDate; }
-    public void setCreationDate(Date creationDate) { this.creationDate = creationDate; }
+    public void setDeliveryType(String deliveryType) {
+        this.deliveryType = deliveryType;
+    }
 
-    public Date getPromiseDate() { return promiseDate; }
-    public void setPromiseDate(Date promiseDate) { this.promiseDate = promiseDate; }
+    public String getServiceType() {
+        return serviceType;
+    }
 
-    public List<NodeEntity> getNodeEntities() { return nodeEntities; }
-    public void setNodeEntities(List<NodeEntity> nodeEntities) { this.nodeEntities = nodeEntities; }
+    public void setServiceType(String serviceType) {
+        this.serviceType = serviceType;
+    }
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public String getCustomerDestination() {
+        return customerDestination;
+    }
+
+    public void setCustomerDestination(String customerDestination) {
+        this.customerDestination = customerDestination;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public Date getPromiseDate() {
+        return promiseDate;
+    }
+
+    public void setPromiseDate(Date promiseDate) {
+        this.promiseDate = promiseDate;
+    }
+
+    public List<NodeEntity> getNodeEntities() {
+        return nodeEntities;
+    }
+
+    public void setNodeEntities(List<NodeEntity> nodeEntities) {
+        this.nodeEntities = nodeEntities;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getPkgDeliveryStatus() {
+        return pkgDeliveryStatus;
+    }
+
+    public void setPkgDeliveryStatus(String pkgDeliveryStatus) {
+        this.pkgDeliveryStatus = pkgDeliveryStatus;
+    }
 
     @Override
     public String toString() {
@@ -162,12 +224,13 @@ class StuEntity {
                 "id=" + id +
                 ", carrier='" + carrier + '\'' +
                 ", tamano='" + tamano + '\'' +
-                ", deliveryDate='" + deliveryType + '\'' +
+                ", deliveryType='" + deliveryType + '\'' +
                 ", serviceType='" + serviceType + '\'' +
                 ", customerDestination='" + customerDestination + '\'' +
                 ", creationDate=" + creationDate +
                 ", promiseDate=" + promiseDate +
                 ", nodeEntities=" + nodeEntities +
+                ", pkgDeliveryStatus='" + pkgDeliveryStatus + '\'' +
                 '}';
     }
 }
@@ -182,6 +245,16 @@ class NodeEntity {
     private Date estDispatchNode; // EstimatedDispatchNode
     private String nodeDispatch;
 
+    public NodeEntity(String idNode, String typeNode, String opTypeNode, Date estArrivalNode, String nodeArrival, Date estDispatchNode, String nodeDispatch) {
+        this.idNode = idNode;
+        this.typeNode = typeNode;
+        this.opTypeNode = opTypeNode;
+        this.estArrivalNode = estArrivalNode;
+        this.nodeArrival = nodeArrival;
+        this.estDispatchNode = estDispatchNode;
+        this.nodeDispatch = nodeDispatch;
+    }
+
     public NodeEntity(int idStu, String idNode, String typeNode, String opTypeNode, Date estArrivalNode,
                       String nodeArrival, Date estDispatchNode, String nodeDispatch) {
         this.idStu = idStu;
@@ -194,29 +267,69 @@ class NodeEntity {
         this.nodeDispatch = nodeDispatch;
     }
 
-    public int getIdStu() { return idStu; }
-    public void setIdStu(int idStu) { this.idStu = idStu; }
+    public int getIdStu() {
+        return idStu;
+    }
 
-    public String getIdNode() { return idNode; }
-    public void setIdNode(String idNode) { this.idNode = idNode; }
+    public void setIdStu(int idStu) {
+        this.idStu = idStu;
+    }
 
-    public String getTypeNode() { return typeNode; }
-    public void setTypeNode(String typeNode) { this.typeNode = typeNode; }
+    public String getIdNode() {
+        return idNode;
+    }
 
-    public String getOpTypeNode() { return opTypeNode; }
-    public void setOpTypeNode(String opTypeNode) { this.opTypeNode = opTypeNode; }
+    public void setIdNode(String idNode) {
+        this.idNode = idNode;
+    }
 
-    public Date getEstArrivalNode() { return estArrivalNode; }
-    public void setEstArrivalNode(Date estArrivalNode) { this.estArrivalNode = estArrivalNode; }
+    public String getTypeNode() {
+        return typeNode;
+    }
 
-    public String getNodeArrival() { return nodeArrival; }
-    public void setNodeArrival(String nodeArrival) { this.nodeArrival = nodeArrival; }
+    public void setTypeNode(String typeNode) {
+        this.typeNode = typeNode;
+    }
 
-    public Date getEstDispatchNode() { return estDispatchNode; }
-    public void setEstDispatchNode(Date estDispatchNode) { this.estDispatchNode = estDispatchNode; }
+    public String getOpTypeNode() {
+        return opTypeNode;
+    }
 
-    public String getNodeDispatch() { return nodeDispatch; }
-    public void setNodeDispatch(String nodeDispatch) { this.nodeDispatch = nodeDispatch; }
+    public void setOpTypeNode(String opTypeNode) {
+        this.opTypeNode = opTypeNode;
+    }
+
+    public Date getEstArrivalNode() {
+        return estArrivalNode;
+    }
+
+    public void setEstArrivalNode(Date estArrivalNode) {
+        this.estArrivalNode = estArrivalNode;
+    }
+
+    public String getNodeArrival() {
+        return nodeArrival;
+    }
+
+    public void setNodeArrival(String nodeArrival) {
+        this.nodeArrival = nodeArrival;
+    }
+
+    public Date getEstDispatchNode() {
+        return estDispatchNode;
+    }
+
+    public void setEstDispatchNode(Date estDispatchNode) {
+        this.estDispatchNode = estDispatchNode;
+    }
+
+    public String getNodeDispatch() {
+        return nodeDispatch;
+    }
+
+    public void setNodeDispatch(String nodeDispatch) {
+        this.nodeDispatch = nodeDispatch;
+    }
 
     @Override
     public String toString() {
@@ -233,18 +346,19 @@ class NodeEntity {
 
 }
 
- // Java implementa la clase principal de datos de importación de Excel Leer todos los datos y datos de operación en la tabla de Excel (consulta, actualización)
- class StuService {
+// Java implementa la clase principal de datos de importación de Excel Leer todos los datos y datos de operación en la tabla de Excel (consulta, actualización)
+class StuService {
     /**
      * Consultar todos los datos en la tabla stu
+     *
      * @return
      */
-    public static List<StuEntity> getAllByDb(){
-        List<StuEntity> list=new ArrayList<StuEntity>();
+    public static List<StuEntity> getAllByDb() {
+        List<StuEntity> list = new ArrayList<StuEntity>();
         try {
-            DBhepler db=new DBhepler();
-            String sql="select * from stu";
-            ResultSet rs= db.Search(sql, null);
+            DBhepler db = new DBhepler();
+            String sql = "select * from stu";
+            ResultSet rs = db.Search(sql, null);
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String carrier = rs.getString("carrier");
@@ -254,10 +368,11 @@ class NodeEntity {
                 String customerDestination = rs.getString("customer_destination");
                 Date creationDate = rs.getDate("creation_date");
                 Date promiseDate = rs.getDate("promise_date");
+                String pkgDeliveryStatus = rs.getString("delivery_status");
 
                 //System.out.println(id+" "+name+" "+sex+ " "+num);
                 list.add(new StuEntity(id, carrier, tamano, deliveryType, serviceType, customerDestination,
-                        creationDate, promiseDate));
+                        creationDate, promiseDate, pkgDeliveryStatus));
             }
 
         } catch (SQLException e) {
@@ -269,59 +384,72 @@ class NodeEntity {
 
     /**
      * Consultar todos los datos en la hoja de cálculo en el directorio especificado
-      //@param archivo ruta completa del archivo
-     * @return
-
-     Al siguiente metodo se le debe asignar la hoja
-
+     * //@param archivo ruta completa del archivo
+     *
+     * @return Al siguiente metodo se le debe asignar la hoja
      */
 
-    public static List<StuEntity> getAllByExcel(String file){
-        List<StuEntity> list=new ArrayList<StuEntity>();
+    public static List<StuEntity> getAllByExcel(String file) {
+        List<StuEntity> list = new ArrayList<StuEntity>();
+        List<NodeEntity> listNode = new ArrayList<NodeEntity>();
         try {
             Workbook rwb = Workbook.getWorkbook(new File(file));
-            Sheet rs = rwb.getSheet ("Sheet1"); // o rwb.getSheet (0)
-            int clos = rs.getColumns (); // Obtiene todas las columnas
-            int rows = rs.getRows (); // Obtener todas las filas
+            Sheet rs = rwb.getSheet("Sheet1"); // o rwb.getSheet (0)
+            int columns = rs.getColumns(); // Obtiene todas las columnas
+            int rows = rs.getRows(); // Obtener todas las filas
 
-          System.out.println(clos+" rows:"+ rows);
-             for (int i = 1; i < rows; i++) {
-                for (int j = 0; j < clos; j++) {
-                    // El primero es el número de columnas, el segundo es el número de filas
-                    String carrier = ((Sheet) rs).getCell (j ++, i) .getContents (); // El número más a la izquierda también se cuenta como una columna por defecto, así que aquí está j ++
-                    String tamano = rs.getCell(j++, i).getContents();
-                    String deliveryType = rs.getCell(j++, i).getContents();
-                    String serviceType = rs.getCell(j++, i).getContents();
-                    String customerDestination = rs.getCell(j++, i).getContents();
-                    String creationDate = rs.getCell(j++, i).getContents();
-                    String promiseDate = rs.getCell(j++, i).getContents();
+            SimpleDateFormat dt = new SimpleDateFormat("dd/mm/yyyy");
 
-                    SimpleDateFormat dt = new SimpleDateFormat("dd-mm-yyyy");
+            System.out.println(columns + " rows:" + rows);
+            for (int i = 1; i < rows; i++) {
+                String carrier = ((Sheet) rs).getCell(0, i).getContents(); // El número más a la izquierda también se cuenta como una columna por defecto, así que aquí está j ++
+                String tamano = rs.getCell(1, i).getContents();
+                String deliveryType = rs.getCell(2, i).getContents();
+                String serviceType = rs.getCell(3, i).getContents();
+                String customerDestination = rs.getCell(4, i).getContents();
+                String creationDate = rs.getCell(5, i).getContents();
+                String promiseDate = rs.getCell(6, i).getContents();
+                for (int j = 7; j < columns; j++) {
+                    String idNode = rs.getCell(j++, i).getContents();
+                    if (idNode.isEmpty() || idNode.equals("-") ) {
+                        break;
+                    }
+                    String typeNode = rs.getCell(j++, i).getContents();
+                    String opType = rs.getCell(j++, i).getContents();
+                    String estArrivalNode = rs.getCell(j++, i).getContents();
+                    String nodeArrival = rs.getCell(j++, i).getContents();
+                    String estDispatchNode = rs.getCell(j++, i).getContents();
+                    String nodeDispatch = rs.getCell(j, i).getContents();
 
-                    System.out.println("carrier:"+carrier+" tamano:"+tamano+" deliveryType:"+deliveryType+" serviceType:"+serviceType
-                    +" customerDestination:"+customerDestination+" creationDate:"+creationDate+" promiseDate:"+promiseDate);
-                    list.add(new StuEntity(carrier, tamano, deliveryType, serviceType, customerDestination, dt.parse(creationDate),
-                            dt.parse(promiseDate)));
+                    listNode.add(new NodeEntity(idNode, typeNode, opType, estArrivalNode.equals("-")?null:dt.parse(estArrivalNode),
+                            nodeArrival, estDispatchNode.equals("-")?null:dt.parse(estDispatchNode), nodeDispatch));
                 }
+
+                String pkgDeliveryStatus = rs.getCell(38, i).getContents();
+
+                list.add(new StuEntity(carrier, tamano, deliveryType, serviceType, customerDestination, dt.parse(creationDate),
+                        dt.parse(promiseDate), listNode, pkgDeliveryStatus));
+
             }
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
+        System.out.println(list);
         return list;
 
     }
 
- /**
- * Determinar si existe por Id.
- * @param id
- * @return
- */
-    public static boolean isExist(int id){
+    /**
+     * Determinar si existe por Id.
+     *
+     * @param id
+     * @return
+     */
+    public static boolean isExist(int id) {
         try {
-            DBhepler db=new DBhepler();
-            ResultSet rs=db.Search("select * from stu where id=?", new String[]{id+""});
+            DBhepler db = new DBhepler();
+            ResultSet rs = db.Search("select * from stu where id=?", new String[]{id + ""});
             if (rs.next()) {
                 return true;
             }
@@ -332,21 +460,22 @@ class NodeEntity {
         return false;
     }
 
-    public static void main(String[] args) {
-        List<StuEntity> all=getAllByDb();
+
+
+    /*public static void main(String[] args) {
+        List<StuEntity> all = getAllByDb();
         for (StuEntity stuEntity : all) {
             System.out.println(stuEntity.toString());
         }
 
         System.out.println(isExist(1));
 
-    }
+    }*/
 
-//  Importe los datos de la tabla de Excel a la base de datos MySql
-class TestExcelToDb {
-    public void main(String[] args) {
+    //  Importe los datos de la tabla de Excel a la base de datos MySql
+    public static void main(String[] args) {
         // Obtener todos los datos de la tabla
-        List<StuEntity> listExcel = StuService.getAllByExcel("/Users/blindcl/Documents/Hackaton/Hackaton/Example_Data_v2.xlsx");
+        List<StuEntity> listExcel = StuService.getAllByExcel("/Users/blindcl/Documents/Hackaton/Hackaton/Example_Data_v3.xls");
         // Obtener todos los datos de la tabla de la base de datos
         List<StuEntity> listDb = StuService.getAllByDb();
 
@@ -356,10 +485,9 @@ class TestExcelToDb {
             int id = stuEntity.getId();
             if (!StuService.isExist(id)) {
                 // Agregar si no existe
-                String sql = "insert into stu (name,sex,num) values(?,?,?)";
+                String sql = "insert into stu (carrier,tamano,delivery_type,service_type,customer_destination,delivery_status) values(?,?,?,?,?,?)";
                 String[] str = new String[]{stuEntity.getCarrier(), stuEntity.getTamano(), stuEntity.getDeliveryType(),
-                        stuEntity.getServiceType(), stuEntity.getCustomerDestination(), stuEntity.getCreationDate().toString(),
-                        stuEntity.getPromiseDate() + ""};
+                        stuEntity.getServiceType(), stuEntity.getCustomerDestination(), stuEntity.getPkgDeliveryStatus() + ""};
                 db.AddU(sql, str);
             } else {
                 // Actualizar si existe
@@ -371,4 +499,4 @@ class TestExcelToDb {
             }
         }
     }
-}}
+}
