@@ -6,27 +6,21 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import jxl.Sheet;
 import jxl.Workbook;
-import jxl.write.Label;
-import jxl.write.WritableSheet;
-import jxl.write.WritableWorkbook;
-
-
-
 
 // metodo para  conectar a la base de datos
-
 class DBhepler {
     /*String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     String url = "jdbc:sqlserver://127.0.0.1;DatabaseName=javenforexcel";*/
 
     String driver = "com.mysql.jdbc.Driver";
     String url = "jdbc:mysql://127.0.0.1:3306/javenforexcel";
-
 
     Connection con = null;
     ResultSet res = null;
@@ -47,7 +41,7 @@ class DBhepler {
     }
 
     // Consultar
-    public ResultSet  Search(String sql, String str[]) {
+    public ResultSet Search(String sql, String str[]) {
         DataBase();
         try {
             PreparedStatement pst =con.prepareStatement(sql);
@@ -86,63 +80,158 @@ class DBhepler {
 
 }
 
-
-
 // Las entidades de la tabla son las siguientes
-
 class StuEntity {
     private int id;
-    private String name;
-    private String sex;
-    private int num;
+    private String carrier;
+    private String tamano;
+    private String deliveryType;
+    private String serviceType;
+    private String customerDestination;
+    private Date creationDate;
+    private Date promiseDate;
+    private List<NodeEntity> nodeEntities;
 
-
-
-    public StuEntity() {
+    public StuEntity(String carrier, String tamano, String deliveryType, String serviceType, String customerDestination, Date creationDate, Date promiseDate) {
+        this.carrier = carrier;
+        this.tamano = tamano;
+        this.deliveryType = deliveryType;
+        this.serviceType = serviceType;
+        this.customerDestination = customerDestination;
+        this.creationDate = creationDate;
+        this.promiseDate = promiseDate;
     }
-    public StuEntity(int id, String name, String sex, int num) {
+
+    public StuEntity(int id, String carrier, String tamano, String deliveryType, String serviceType, String customerDestination, Date creationDate, Date promiseDate) {
         this.id = id;
-        this.name = name;
-        this.sex = sex;
-        this.num = num;
+        this.carrier = carrier;
+        this.tamano = tamano;
+        this.deliveryType = deliveryType;
+        this.serviceType = serviceType;
+        this.customerDestination = customerDestination;
+        this.creationDate = creationDate;
+        this.promiseDate = promiseDate;
     }
+
+    public StuEntity(int id, String carrier, String tamano, String deliveryType, String serviceType,
+                     String customerDestination, Date creationDate, Date promiseDate, List<NodeEntity> nodeEntities) {
+        this.id = id;
+        this.carrier = carrier;
+        this.tamano = tamano;
+        this.deliveryType = deliveryType;
+        this.serviceType = serviceType;
+        this.customerDestination = customerDestination;
+        this.creationDate = creationDate;
+        this.promiseDate = promiseDate;
+        this.nodeEntities = nodeEntities;
+    }
+
+    public String getCarrier() { return carrier; }
+    public void setCarrier(String carrier) { this.carrier = carrier; }
+
+    public String getTamano() { return tamano; }
+    public void setTamano(String tamano) { this.tamano = tamano; }
+
+    public String getDeliveryType() { return deliveryType; }
+    public void setDeliveryType(String deliveryType) { this.deliveryType = deliveryType; }
+
+    public String getServiceType() { return serviceType; }
+    public void setServiceType(String serviceType) { this.serviceType = serviceType; }
+
+    public String getCustomerDestination() { return customerDestination; }
+    public void setCustomerDestination(String customerDestination) { this.customerDestination = customerDestination; }
+
+    public Date getCreationDate() { return creationDate; }
+    public void setCreationDate(Date creationDate) { this.creationDate = creationDate; }
+
+    public Date getPromiseDate() { return promiseDate; }
+    public void setPromiseDate(Date promiseDate) { this.promiseDate = promiseDate; }
+
+    public List<NodeEntity> getNodeEntities() { return nodeEntities; }
+    public void setNodeEntities(List<NodeEntity> nodeEntities) { this.nodeEntities = nodeEntities; }
+
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
     @Override
     public String toString() {
-        return "StuEntity [id=" + id + ", name=" + name + ", sex=" + sex
-                + ", num=" + num + "]";
+        return "StuEntity{" +
+                "id=" + id +
+                ", carrier='" + carrier + '\'' +
+                ", tamano='" + tamano + '\'' +
+                ", deliveryDate='" + deliveryType + '\'' +
+                ", serviceType='" + serviceType + '\'' +
+                ", customerDestination='" + customerDestination + '\'' +
+                ", creationDate=" + creationDate +
+                ", promiseDate=" + promiseDate +
+                ", nodeEntities=" + nodeEntities +
+                '}';
     }
-    public int getId() {
-        return id;
-    }
-    public void setId(int id) {
-        this.id = id;
-    }
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-    public String getSex() {
-        return sex;
-    }
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
-    public int getNum() {
-        return num;
-    }
-    public void setNum(int num) {
-        this.num = num;
+}
+
+class NodeEntity {
+    private int idStu;
+    private String idNode;
+    private String typeNode;
+    private String opTypeNode; // OperatorTypeNode
+    private Date estArrivalNode; // EstimatedArrivalNode
+    private String nodeArrival;
+    private Date estDispatchNode; // EstimatedDispatchNode
+    private String nodeDispatch;
+
+    public NodeEntity(int idStu, String idNode, String typeNode, String opTypeNode, Date estArrivalNode,
+                      String nodeArrival, Date estDispatchNode, String nodeDispatch) {
+        this.idStu = idStu;
+        this.idNode = idNode;
+        this.typeNode = typeNode;
+        this.opTypeNode = opTypeNode;
+        this.estArrivalNode = estArrivalNode;
+        this.nodeArrival = nodeArrival;
+        this.estDispatchNode = estDispatchNode;
+        this.nodeDispatch = nodeDispatch;
     }
 
+    public int getIdStu() { return idStu; }
+    public void setIdStu(int idStu) { this.idStu = idStu; }
+
+    public String getIdNode() { return idNode; }
+    public void setIdNode(String idNode) { this.idNode = idNode; }
+
+    public String getTypeNode() { return typeNode; }
+    public void setTypeNode(String typeNode) { this.typeNode = typeNode; }
+
+    public String getOpTypeNode() { return opTypeNode; }
+    public void setOpTypeNode(String opTypeNode) { this.opTypeNode = opTypeNode; }
+
+    public Date getEstArrivalNode() { return estArrivalNode; }
+    public void setEstArrivalNode(Date estArrivalNode) { this.estArrivalNode = estArrivalNode; }
+
+    public String getNodeArrival() { return nodeArrival; }
+    public void setNodeArrival(String nodeArrival) { this.nodeArrival = nodeArrival; }
+
+    public Date getEstDispatchNode() { return estDispatchNode; }
+    public void setEstDispatchNode(Date estDispatchNode) { this.estDispatchNode = estDispatchNode; }
+
+    public String getNodeDispatch() { return nodeDispatch; }
+    public void setNodeDispatch(String nodeDispatch) { this.nodeDispatch = nodeDispatch; }
+
+    @Override
+    public String toString() {
+        return "NodeEntity{" +
+                "idNode='" + idNode + '\'' +
+                ", typeNode='" + typeNode + '\'' +
+                ", opTypeNode='" + opTypeNode + '\'' +
+                ", estArrivalNode=" + estArrivalNode +
+                ", nodeArrival='" + nodeArrival + '\'' +
+                ", estDispatchNode=" + estDispatchNode +
+                ", nodeDispatch='" + nodeDispatch + '\'' +
+                '}';
+    }
 
 }
 
  // Java implementa la clase principal de datos de importación de Excel Leer todos los datos y datos de operación en la tabla de Excel (consulta, actualización)
-
-public class StuService {
+ class StuService {
     /**
      * Consultar todos los datos en la tabla stu
      * @return
@@ -154,13 +243,18 @@ public class StuService {
             String sql="select * from stu";
             ResultSet rs= db.Search(sql, null);
             while (rs.next()) {
-                int id=rs.getInt("id");
-                String name=rs.getString("name");
-                String sex=rs.getString("sex");
-                int num=rs.getInt("num");
+                int id = rs.getInt("id");
+                String carrier = rs.getString("carrier");
+                String tamano = rs.getString("tamano");
+                String deliveryType = rs.getString("delivery_type");
+                String serviceType = rs.getString("service_type");
+                String customerDestination = rs.getString("customer_destination");
+                Date creationDate = rs.getDate("creation_date");
+                Date promiseDate = rs.getDate("promise_date");
 
                 //System.out.println(id+" "+name+" "+sex+ " "+num);
-                list.add(new StuEntity(id, name, sex, num));
+                list.add(new StuEntity(id, carrier, tamano, deliveryType, serviceType, customerDestination,
+                        creationDate, promiseDate));
             }
 
         } catch (SQLException e) {
@@ -187,28 +281,36 @@ public class StuService {
     public static List<StuEntity> getAllByExcel(String file){
         List<StuEntity> list=new ArrayList<StuEntity>();
         try {
-            Workbook rwb=Workbook.getWorkbook(new File(file));
- //           Hoja rs = rwb.getSheet ("Prueba Shee 1"); // o rwb.getSheet (0)
+            Workbook rwb = Workbook.getWorkbook(new File(file));
+            Sheet rs = rwb.getSheet ("Sheet1"); // o rwb.getSheet (0)
             int clos = rs.getColumns (); // Obtiene todas las columnas
-            int filas = rs.getRows (); // Obtener todas las filas
+            int rows = rs.getRows (); // Obtener todas las filas
 
           System.out.println(clos+" rows:"+ rows);
              for (int i = 1; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
                     // El primero es el número de columnas, el segundo es el número de filas
-                    String id = ((Sheet) rs).getCell (j ++, i) .getContents (); // El número más a la izquierda también se cuenta como una columna por defecto, así que aquí está j ++
-                    String name=rs.getCell(j++, i).getContents();
-                    String sex=rs.getCell(j++, i).getContents();
-                    String num=rs.getCell(j++, i).getContents();
+                    String carrier = ((Sheet) rs).getCell (j ++, i) .getContents (); // El número más a la izquierda también se cuenta como una columna por defecto, así que aquí está j ++
+                    String tamano = rs.getCell(j++, i).getContents();
+                    String deliveryType = rs.getCell(j++, i).getContents();
+                    String serviceType = rs.getCell(j++, i).getContents();
+                    String customerDestination = rs.getCell(j++, i).getContents();
+                    String creationDate = rs.getCell(j++, i).getContents();
+                    String promiseDate = rs.getCell(j++, i).getContents();
 
-                    System.out.println("id:"+id+" name:"+name+" sex:"+sex+" num:"+num);
-                    list.add(new StuEntity(Integer.parseInt(id), name, sex, Integer.parseInt(num)));
+                    SimpleDateFormat dt = new SimpleDateFormat("dd-mm-yyyy");
+
+                    System.out.println("carrier:"+carrier+" tamano:"+tamano+" deliveryType:"+deliveryType+" serviceType:"+serviceType
+                    +" customerDestination:"+customerDestination+" creationDate:"+creationDate+" promiseDate:"+promiseDate);
+                    list.add(new StuEntity(carrier, tamano, deliveryType, serviceType, customerDestination, dt.parse(creationDate),
+                            dt.parse(promiseDate)));
                 }
             }
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+
         return list;
 
     }
@@ -242,89 +344,33 @@ public class StuService {
 
     }
 
-}
-
-// Importar datos a una hoja de Excel
-
-
-class TestDbToExcel {
-
-    public static void main(String[] args) {
-        try {
-            WritableWorkbook wwb = null;
-
-            // Cree un libro de trabajo de Excel modificable
-            String fileName = "D://book.xls";
-            File file=new File(fileName);
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-            // Cree un libro de trabajo con fileName como nombre de archivo
-            wwb = Workbook.createWorkbook(file);
-
-            // Crear hoja de trabajo
-            WritableSheet ws = wwb.createSheet("Test Shee 1", 0);
-
-            // Consulta todos los datos en la base de datos
-            List<StuEntity> list= StuService.getAllByDb();
-            // El número de fila de la tabla de Excel que se insertará, comenzando desde 0 por defecto
-            Label labelId = new Label (0, 0, "Number (id)"); // Indica el primero
-            Label labelName = new Label (1, 0, "Nombre (nombre)");
-            Label labelSex = new Label (2, 0, "Sexo (sexo)");
-            Label labelNum = new Label (3, 0, "Salario (num)");
-
-            ws.addCell(labelId);
-            ws.addCell(labelName);
-            ws.addCell(labelSex);
-            ws.addCell(labelNum);
-            for (int i = 0; i < list.size(); i++) {
-
-                Label labelId_i= new Label(0, i+1, list.get(i).getId()+"");
-                Label labelName_i= new Label(1, i+1, list.get(i).getName());
-                Label labelSex_i= new Label(2, i+1, list.get(i).getSex());
-                Label labelNum_i= new Label(3, i+1, list.get(i).getNum()+"");
-                ws.addCell(labelId_i);
-                ws.addCell(labelName_i);
-                ws.addCell(labelSex_i);
-                ws.addCell(labelNum_i);
-            }
-
-            // Escribe en el documento
-            wwb.write();
-            // Cerrar el objeto del libro de Excel
-            wwb.close();
-
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-}
-
 //  Importe los datos de la tabla de Excel a la base de datos MySql
-
 class TestExcelToDb {
-    public static void main(String[] args) {
+    public void main(String[] args) {
         // Obtener todos los datos de la tabla
-        List<StuEntity> listExcel=StuService.getAllByExcel("d://book.xls");
-       // Obtener todos los datos de la tabla de la base de datos
-        List<StuEntity> listDb=StuService.getAllByDb();
+        List<StuEntity> listExcel = StuService.getAllByExcel("/Users/blindcl/Documents/Hackaton/Hackaton/Example_Data_v2.xlsx");
+        // Obtener todos los datos de la tabla de la base de datos
+        List<StuEntity> listDb = StuService.getAllByDb();
 
-        DBhepler db=new DBhepler();
+        DBhepler db = new DBhepler();
 
         for (StuEntity stuEntity : listExcel) {
-            int id=stuEntity.getId();
+            int id = stuEntity.getId();
             if (!StuService.isExist(id)) {
                 // Agregar si no existe
-                String sql="insert into stu (name,sex,num) values(?,?,?)";
-                String[] str=new String[]{stuEntity.getName(),stuEntity.getSex(),stuEntity.getNum()+""};
+                String sql = "insert into stu (name,sex,num) values(?,?,?)";
+                String[] str = new String[]{stuEntity.getCarrier(), stuEntity.getTamano(), stuEntity.getDeliveryType(),
+                        stuEntity.getServiceType(), stuEntity.getCustomerDestination(), stuEntity.getCreationDate().toString(),
+                        stuEntity.getPromiseDate() + ""};
                 db.AddU(sql, str);
-            }else {
+            } else {
                 // Actualizar si existe
-                String sql="update stu set name=?,sex=?,num=? where id=?";
-                String[] str=new String[]{stuEntity.getName(),stuEntity.getSex(),stuEntity.getNum()+"",id+""};
+                String sql = "update stu set name=?,sex=?,num=? where id=?";
+                String[] str = new String[]{stuEntity.getCarrier(), stuEntity.getTamano(), stuEntity.getDeliveryType(),
+                        stuEntity.getServiceType(), stuEntity.getCustomerDestination(), stuEntity.getCreationDate().toString(),
+                        stuEntity.getPromiseDate() + "", id + ""};
                 db.AddU(sql, str);
             }
         }
     }
-}
+}}
